@@ -1,0 +1,74 @@
+using Program.WebApi.Controllers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Web;
+using System.Web.Http;
+using System.Web.UI.WebControls;
+
+namespace Program.WebApi.Controllers
+{
+    public class FootballPlayer
+    {
+        public int Number { get; set; }
+        public string Name { get; set; }
+        public string Position { get; set; }
+        public int YearsInContract { get; set; }
+        public string Club { get; set; }
+
+
+    }
+    public class PlayerController : ApiController
+    {
+        public List<FootballPlayer> player = new List<FootballPlayer>
+        {
+            new FootballPlayer { Name = "Luka Lukic", Number = 1, Position = "goalkeeper", YearsInContract = 1, Club = "NK Osijek"},
+            new FootballPlayer { Name = "Kruno Skoro", Number = 4, Position = "forward", YearsInContract = 4, Club = "NK Varazdin"},
+            new FootballPlayer { Name = "Pero Peric", Number = 7, Position = "midfield", YearsInContract = 2, Club = "NK Hajduk"},
+            new FootballPlayer { Name = "Bruno Bukic", Number = 5, Position = "defense", YearsInContract = 2, Club = "NK Dinamo"},
+            new FootballPlayer { Name = "Matej Jukic", Number = 8, Position = "defense", YearsInContract = 1, Club = "NK Rijeka"}
+        };
+
+        // GET api/players
+        public IEnumerable<FootballPlayer> Get()
+        {
+            return player;
+        }
+
+        // GET api/players/5
+        public IEnumerable<FootballPlayer> Get(int Number)
+        {
+            return player.Where(p => p.Number == Number);
+        }
+
+        // POST api/players
+        public void Post([FromBody] FootballPlayer footballPlayer)
+        {
+            player.Add(footballPlayer);
+        }
+
+        // PUT api/players/5
+        public void Put(int number, [FromBody] FootballPlayer updatedPlayer)
+        {
+            var playerToUpdate = player.FirstOrDefault(p => p.Number == number);
+            if (playerToUpdate != null)
+            {
+                playerToUpdate.Name = updatedPlayer.Name;
+                playerToUpdate.Position = updatedPlayer.Position;
+                playerToUpdate.YearsInContract = updatedPlayer.YearsInContract;
+                playerToUpdate.Club = updatedPlayer.Club;
+            }
+        }
+
+        // DELETE api/players/5
+        public void Delete(int number)
+        {
+            var playerToDelete = player.FirstOrDefault(p => p.Number == number);
+            if (playerToDelete != null)
+            {
+                player.Remove(playerToDelete);
+            }
+        }
+    }
+}
