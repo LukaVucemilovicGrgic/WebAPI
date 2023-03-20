@@ -43,18 +43,32 @@ namespace Program.WebApi.Controllers
         }
 
         // POST api/players
-        public void Post([FromBody] string value)
+        public void Post([FromBody] FootballPlayer footballPlayer)
         {
+            player.Add(footballPlayer);
         }
 
         // PUT api/players/5
-        public void Put(int id, [FromBody] string value)
+        public void Put(int number, [FromBody] FootballPlayer updatedPlayer)
         {
+            var playerToUpdate = player.FirstOrDefault(p => p.Number == number);
+            if (playerToUpdate != null)
+            {
+                playerToUpdate.Name = updatedPlayer.Name;
+                playerToUpdate.Position = updatedPlayer.Position;
+                playerToUpdate.YearsInContract = updatedPlayer.YearsInContract;
+                playerToUpdate.Club = updatedPlayer.Club;
+            }
         }
 
         // DELETE api/players/5
-        public void Delete(int id)
+        public void Delete(int number)
         {
+            var playerToDelete = player.FirstOrDefault(p => p.Number == number);
+            if (playerToDelete != null)
+            {
+                player.Remove(playerToDelete);
+            }
         }
     }
 }
