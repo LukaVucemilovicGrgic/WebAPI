@@ -1,5 +1,7 @@
-﻿using Program.WebApi.Controllers;
-using Program.WebApi.Models;
+﻿using Microsoft.Ajax.Utilities;
+using Program.Model;
+using Program.Service;
+using Program.WebApi.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -11,95 +13,44 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.UI.WebControls;
 
+
 namespace Program.WebApi.Controllers
 {
 
-    public class PlayerController : ApiController
+    public class BuyerController : ApiController
     {
-
-        //public static List<FootballPlayer> players = new List<FootballPlayer>
-        //{
-        //    new FootballPlayer { Name = "Luka Lukic", Number = 1, Position = "goalkeeper", YearsInContract = 1, Club = "NK Osijek"},
-        //    new FootballPlayer { Name = "Kruno Skoro", Number = 4, Position = "forward", YearsInContract = 4, Club = "NK Varazdin"},
-        //    new FootballPlayer { Name = "Pero Peric", Number = 7, Position = "midfield", YearsInContract = 2, Club = "NK Hajduk"},
-        //    new FootballPlayer { Name = "Bruno Bukic", Number = 5, Position = "defense", YearsInContract = 2, Club = "NK Dinamo"},
-        //    new FootballPlayer { Name = "Matej Jukic", Number = 8, Position = "defense", YearsInContract = 1, Club = "NK Rijeka"}
-        //};
 
         // GET api/players/
 
         [HttpGet]
-        public HttpResponseMessage Get()
+        public HttpResponseMessage GetAllBuyers()
         {
-            string connectionString = "Data Source=st-07\\MSSQLSERVER01;Initial Catalog=ZadatakGPP;Integrated Security=True";
-
-            SqlConnection connection = new SqlConnection(connectionString);
-
-            using (connection)
+            BuyerService service = new BuyerService();
+            List<Buyer> buyers=service.GetAllBuyers();
+            
+            if(buyers != null)
             {
-                SqlCommand command = new SqlCommand("SELECT * FROM Buyer", connection);
-                connection.Open();
-
-                SqlDataReader reader = command.ExecuteReader();
-
-                List<Buyer> buyers = new List<Buyer>();
-                if (reader.HasRows)
-                {
-                    while (reader.Read())
-                    {
-                        Buyer buyer = new Buyer();
-
-                        buyer.Id = reader.GetGuid(0);
-                        buyer.BuyerName = reader.GetString(1);
-                        buyer.PersonalIdentificationNumber = reader.GetInt32(2);
-                        buyer.TicketId = reader.GetGuid(3);
-
-                        buyers.Add(buyer);
-                    }
-                    reader.Close();
-                    return Request.CreateResponse(HttpStatusCode.OK, buyers);
-                }
-                else
-                {
-                    reader.Close();
-                    return Request.CreateResponse(HttpStatusCode.NotFound, "Wrong input");
-                }
+                return Request.CreateResponse(HttpStatusCode.OK, buyers);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound);
             }
         }
 
         [HttpGet]
-        public HttpResponseMessage Get(Guid id)
+        public HttpResponseMessage GetBuyer(Guid Id)
         {
-            string connectionString = "Data Source=st-07\\MSSQLSERVER01;Initial Catalog=ZadatakGPP;Integrated Security=True";
+            BuyerService service = new BuyerService();
+            List<Buyer> buyer = service.GetBuyer(Id);
 
-            SqlConnection connection = new SqlConnection(connectionString);
-
-            using (connection)
+            if (buyer != null)
             {
-                SqlCommand command = new SqlCommand("SELECT * FROM Buyer WHERE Id=@Id", connection);
-                command.Parameters.AddWithValue("@Id", id);
-                connection.Open();
-
-                SqlDataReader reader = command.ExecuteReader();
-
-                if (reader.HasRows)
-                {
-                    reader.Read();
-                    Buyer buyer = new Buyer();
-
-                    buyer.Id = reader.GetGuid(0);
-                    buyer.BuyerName = reader.GetString(1);
-                    buyer.PersonalIdentificationNumber = reader.GetInt32(2);
-                    buyer.TicketId = reader.GetGuid(3);
-
-                    reader.Close();
-                    return Request.CreateResponse(HttpStatusCode.OK, buyer);
-                }
-                else
-                {
-                    reader.Close();
-                    return Request.CreateResponse(HttpStatusCode.NotFound, "Buyer with Id " + id + " not found.");
-                }
+                return Request.CreateResponse(HttpStatusCode.OK, buyer);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound);
             }
         }
 
@@ -164,8 +115,45 @@ namespace Program.WebApi.Controllers
             }
         }
 
+        [HttpDelete]
+        public HttpResponseMessage Delete(Guid id)
+        {
+            string connectionString = "Data Source=st-07\\MSSQLSERVER01;Initial Catalog=ZadatakGPP;Integrated Security=True";
+            SqlConnection connection = new SqlConnection(connectionString);
+
+            using (connection)
+            {
+                SqlCommand command = new SqlCommand("DELETE FROM Buyer WHERE Id=@Id", connection);
+
+                command.Parameters.AddWithValue("@Id", id);
+                connection.Open();
 
 
+                int rowsAffected = command.ExecuteNonQuery();
+                if (rowsAffected > 0)
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK, "Buyer with Id " + id + " has been deleted.");
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "Buyer with Id " + id + " not found.");
+                }
+            }
+        }
+    }
+}
+
+
+
+
+        //public static List<FootballPlayer> players = new List<FootballPlayer>
+        //{
+        //    new FootballPlayer { Name = "Luka Lukic", Number = 1, Position = "goalkeeper", YearsInContract = 1, Club = "NK Osijek"},
+        //    new FootballPlayer { Name = "Kruno Skoro", Number = 4, Position = "forward", YearsInContract = 4, Club = "NK Varazdin"},
+        //    new FootballPlayer { Name = "Pero Peric", Number = 7, Position = "midfield", YearsInContract = 2, Club = "NK Hajduk"},
+        //    new FootballPlayer { Name = "Bruno Bukic", Number = 5, Position = "defense", YearsInContract = 2, Club = "NK Dinamo"},
+        //    new FootballPlayer { Name = "Matej Jukic", Number = 8, Position = "defense", YearsInContract = 1, Club = "NK Rijeka"}
+        //};
 
         //return Request.CreateResponse(HttpStatusCode.OK, players);
 
@@ -238,8 +226,3 @@ namespace Program.WebApi.Controllers
         //        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "The number you typed does not exist in the list.");
         //    }
         //}
-
-    }
-}
-
-
