@@ -10,11 +10,12 @@ namespace Program.Repository.Common
 
     public interface IBuyerRepository
     {
-        List<Buyer> GetAllBuyers();
-        List<Buyer> GetBuyer(Guid Id);
-        bool AddBuyer(Buyer buyer);
-        bool UpdateBuyer(Guid id, Buyer buyer);
-        bool DeleteBuyer(Guid id);
+        Task<List<Buyer>> GetAllBuyersAsync();
+        Task<List<Buyer>> GetBuyerAsync(Guid Id);
+        Task<bool> AddBuyerAsync(Buyer buyer);
+        Task<bool> UpdateBuyerAsync(Guid id, Buyer buyer);
+        Task<bool> DeleteBuyerAsync(Guid id);
+
 
     }
 }

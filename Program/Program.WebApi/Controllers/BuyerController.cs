@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -20,13 +21,11 @@ namespace Program.WebApi.Controllers
     public class BuyerController : ApiController
     {
 
-        // GET api/players/
-
         [HttpGet]
-        public HttpResponseMessage GetAllBuyers()
+        public async Task<HttpResponseMessage> GetAllBuyersAsync()
         {
             BuyerService service = new BuyerService();
-            List<Buyer> buyers = service.GetAllBuyers();
+            var buyers = await service.GetAllBuyersAsync();
             
             if(buyers != null)
             {
@@ -39,10 +38,10 @@ namespace Program.WebApi.Controllers
         }
 
         [HttpGet]
-        public HttpResponseMessage GetBuyer(Guid Id)
+        public async Task<HttpResponseMessage> GetBuyerAsync(Guid Id)
         {
             BuyerService service = new BuyerService();
-            List<Buyer> buyer = service.GetBuyer(Id);
+            var buyer = await service.GetBuyerAsync(Id);
 
             if (buyer != null)
             {
@@ -55,10 +54,10 @@ namespace Program.WebApi.Controllers
         }
 
         [HttpPost]
-        public HttpResponseMessage AddBuyer(Buyer buyer)
+        public async Task<HttpResponseMessage> AddBuyerAsync(Buyer buyer)
         {
             BuyerService service = new BuyerService();
-            var newBuyer = service.AddBuyer(buyer);
+            var newBuyer = await service.AddBuyerAsync(buyer);
 
             if (newBuyer != false)
             {
@@ -71,10 +70,10 @@ namespace Program.WebApi.Controllers
         }
 
         [HttpPut]
-        public HttpResponseMessage UpdateBuyer(Guid id, [FromBody] Buyer buyer)
+        public async Task<HttpResponseMessage> UpdateBuyerAsync(Guid id, [FromBody] Buyer buyer)
         {
             BuyerService service = new BuyerService();
-            var newBuyer = service.AddBuyer(buyer);
+            var newBuyer = await service.AddBuyerAsync(buyer);
 
             if (newBuyer != false)
             {
@@ -87,10 +86,10 @@ namespace Program.WebApi.Controllers
         }
 
         [HttpDelete]
-        public HttpResponseMessage Delete(Guid id)
+        public async Task<HttpResponseMessage> DeleteAsync(Guid id)
         {
             BuyerService service = new BuyerService();
-            var newBuyer = service.DeleteBuyer(id);
+            var newBuyer = await service.DeleteBuyerAsync(id);
 
             if (newBuyer != false)
             {

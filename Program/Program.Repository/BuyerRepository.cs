@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Net;
@@ -10,7 +11,7 @@ namespace Program.Repository
 {
     public class BuyerRepository : IBuyerRepository
     {
-        public  List<Buyer> GetAllBuyers()      //async
+        public async Task<List<Buyer>> GetAllBuyersAsync()      //async Task<T>
         {
             string connectionString = "Data Source=st-07\\MSSQLSERVER01;Initial Catalog=ZadatakGPP;Integrated Security=True";
 
@@ -21,7 +22,7 @@ namespace Program.Repository
                 SqlCommand command = new SqlCommand("SELECT * FROM Buyer", connection);
                 connection.Open();
 
-                SqlDataReader reader = command.ExecuteReader();     //await
+                SqlDataReader reader = await command.ExecuteReaderAsync();     //await
 
                 List<Buyer> buyers = new List<Buyer>();
                 if (reader.HasRows)
@@ -48,7 +49,7 @@ namespace Program.Repository
             }
         }
 
-        public List<Buyer> GetBuyer(Guid Id)
+        public async Task<List<Buyer>> GetBuyerAsync(Guid Id)
         {
             string connectionString = "Data Source=st-07\\MSSQLSERVER01;Initial Catalog=ZadatakGPP;Integrated Security=True";
 
@@ -60,7 +61,7 @@ namespace Program.Repository
                 command.Parameters.AddWithValue("@Id", Id);
                 connection.Open();
 
-                SqlDataReader reader = command.ExecuteReader();
+                SqlDataReader reader = await command.ExecuteReaderAsync();
 
                 List<Buyer> buyers = new List<Buyer>();
 
@@ -86,7 +87,7 @@ namespace Program.Repository
                 }
             }
         }
-        public bool AddBuyer(Buyer buyer)
+        public async Task<bool> AddBuyerAsync(Buyer buyer)
         {
             string connectionString = "Data Source=st-07\\MSSQLSERVER01;Initial Catalog=ZadatakGPP;Integrated Security=True";
 
@@ -104,7 +105,7 @@ namespace Program.Repository
 
                 connection.Open();
 
-                int rowsAffected = command.ExecuteNonQuery();
+                int rowsAffected = await command.ExecuteNonQueryAsync();
                 if (rowsAffected > 0)
                 {
                     return true;
@@ -115,7 +116,7 @@ namespace Program.Repository
                 }
             }
         }
-        public bool UpdateBuyer(Guid id, Buyer buyer)
+        public async Task<bool> UpdateBuyerAsync(Guid id, Buyer buyer)
         {
             string connectionString = "Data Source=st-07\\MSSQLSERVER01;Initial Catalog=ZadatakGPP;Integrated Security=True";
 
@@ -132,7 +133,7 @@ namespace Program.Repository
 
                 connection.Open();
 
-                int rowsAffected = command.ExecuteNonQuery();
+                int rowsAffected = await command.ExecuteNonQueryAsync();
                 if (rowsAffected > 0)
                 {
                     return true;
@@ -143,7 +144,7 @@ namespace Program.Repository
                 }
             }
         }
-        public bool DeleteBuyer(Guid id)
+        public async Task<bool> DeleteBuyerAsync(Guid id)
         {
             string connectionString = "Data Source=st-07\\MSSQLSERVER01;Initial Catalog=ZadatakGPP;Integrated Security=True";
             SqlConnection connection = new SqlConnection(connectionString);
@@ -156,7 +157,7 @@ namespace Program.Repository
                 connection.Open();
 
 
-                int rowsAffected = command.ExecuteNonQuery();
+                int rowsAffected = await command.ExecuteNonQueryAsync();
                 if (rowsAffected > 0)
                 {
                     return true;

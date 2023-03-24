@@ -11,34 +11,34 @@ namespace Program.Service
 {
   public class BuyerService : IBuyerService
     {
-        public List<Buyer> GetAllBuyers()
+        public async Task<List<Buyer>> GetAllBuyersAsync()
         {
             BuyerRepository repository = new BuyerRepository();
-            List<Buyer> buyers = repository.GetAllBuyers();
+            List<Buyer> buyers = await repository.GetAllBuyersAsync();
             return buyers;
         }
-        public List<Buyer> GetBuyer(Guid Id)
+        public async Task<List<Buyer>> GetBuyerAsync(Guid Id)
         {
             BuyerRepository repository = new BuyerRepository();
-            List<Buyer> buyer = repository.GetBuyer(Id);
+            List<Buyer> buyer = await repository.GetBuyerAsync(Id);
             return buyer;
         }
-        public bool AddBuyer(Buyer buyer)
+        public async Task<bool> AddBuyerAsync(Buyer buyer)
         {
             BuyerRepository repository = new BuyerRepository();
-            bool newBuyer = repository.AddBuyer(buyer);
+            bool newBuyer = await repository.AddBuyerAsync(buyer);
             return true;
         }
-        public bool UpdateBuyer(Guid id, Buyer buyer)
+        public async Task<bool> UpdateBuyerAsync(Guid id, Buyer buyer)
         {
             BuyerRepository repository = new BuyerRepository();
-            bool newBuyer = repository.AddBuyer(buyer);
+            bool newBuyer = await repository.AddBuyerAsync(buyer);
             return true;
         }
-        public bool DeleteBuyer(Guid id)
+        public async Task<bool> DeleteBuyerAsync(Guid id)
         {
             BuyerRepository repository = new BuyerRepository();
-            bool newBuyer = repository.DeleteBuyer(id);
+            bool newBuyer = await repository.DeleteBuyerAsync(id);
             return true;
         }
     }
