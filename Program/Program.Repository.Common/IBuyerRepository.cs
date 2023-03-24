@@ -12,9 +12,9 @@ namespace Program.Repository.Common
     {
         List<Buyer> GetAllBuyers();
         List<Buyer> GetBuyer(Guid Id);
-        //bool AddBuyer(Buyer buyer);
-        //bool UpdateBuyer(Guid id, Buyer buyer);
-        //bool DeleteBuyer(Guid id);
+        bool AddBuyer(Buyer buyer);
+        bool UpdateBuyer(Guid id, Buyer buyer);
+        bool DeleteBuyer(Guid id);
 
     }
 }

@@ -26,7 +26,7 @@ namespace Program.WebApi.Controllers
         public HttpResponseMessage GetAllBuyers()
         {
             BuyerService service = new BuyerService();
-            List<Buyer> buyers=service.GetAllBuyers();
+            List<Buyer> buyers = service.GetAllBuyers();
             
             if(buyers != null)
             {
@@ -55,89 +55,50 @@ namespace Program.WebApi.Controllers
         }
 
         [HttpPost]
-        public HttpResponseMessage Post([FromBody] Buyer buyer)
+        public HttpResponseMessage AddBuyer(Buyer buyer)
         {
-            string connectionString = "Data Source=st-07\\MSSQLSERVER01;Initial Catalog=ZadatakGPP;Integrated Security=True";
+            BuyerService service = new BuyerService();
+            var newBuyer = service.AddBuyer(buyer);
 
-            SqlConnection connection = new SqlConnection(connectionString);
-
-            using (connection)
+            if (newBuyer != false)
             {
-                SqlCommand command = new SqlCommand("INSERT INTO Buyer (Id, BuyerName, PersonalIdentificationNumber, TicketId)" +
-                " VALUES (@Id, @BuyerName, @PersonalIdentificationNumber, @TicketId)", connection);
-                buyer.Id = Guid.NewGuid();                          //izbacili smo Id iz Body-a 
-                command.Parameters.AddWithValue("@Id", buyer.Id);
-                command.Parameters.AddWithValue("@BuyerName", buyer.BuyerName);
-                command.Parameters.AddWithValue("@PersonalIdentificationNumber", buyer.PersonalIdentificationNumber);
-                command.Parameters.AddWithValue("@TicketId", buyer.TicketId);
-
-                connection.Open();
-
-                int rowsAffected = command.ExecuteNonQuery();
-                if (rowsAffected >= 0)
-                {
-                    return Request.CreateResponse(HttpStatusCode.Created, buyer);
-                }
-                else
-                {
-                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Failed to create buyer.");
-                }
+                return Request.CreateResponse(HttpStatusCode.Accepted, "Add Buyer completed.");
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.NotAcceptable, "Failed to add Buyer.");
             }
         }
 
         [HttpPut]
-        public HttpResponseMessage Put(Guid id, [FromBody] Buyer buyer)
+        public HttpResponseMessage UpdateBuyer(Guid id, [FromBody] Buyer buyer)
         {
-            string connectionString = "Data Source=st-07\\MSSQLSERVER01;Initial Catalog=ZadatakGPP;Integrated Security=True";
+            BuyerService service = new BuyerService();
+            var newBuyer = service.AddBuyer(buyer);
 
-            SqlConnection connection = new SqlConnection(connectionString);
-
-            using (connection)
+            if (newBuyer != false)
             {
-                SqlCommand command = new SqlCommand("UPDATE Buyer SET BuyerName=@BuyerName, " +
-                "PersonalIdentificationNumber=@PersonalIdentificationNumber, TicketId=@TicketId WHERE Id=@Id", connection);
-                command.Parameters.AddWithValue("@Id", id);
-                command.Parameters.AddWithValue("@BuyerName", buyer.BuyerName);
-                command.Parameters.AddWithValue("@PersonalIdentificationNumber", buyer.PersonalIdentificationNumber);
-                command.Parameters.AddWithValue("@TicketId", buyer.TicketId);
-
-                connection.Open();
-
-                int rowsAffected = command.ExecuteNonQuery();
-                if (rowsAffected > 0)
-                {
-                    return Request.CreateResponse(HttpStatusCode.OK, buyer);
-                }
-                else
-                {
-                    return Request.CreateResponse(HttpStatusCode.NotFound, "Buyer with Id " + id + " not found.");
-                }
+                return Request.CreateResponse(HttpStatusCode.Accepted, "Add Buyer completed.");
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.NotAcceptable, "Failed to add Buyer.");
             }
         }
 
         [HttpDelete]
         public HttpResponseMessage Delete(Guid id)
         {
-            string connectionString = "Data Source=st-07\\MSSQLSERVER01;Initial Catalog=ZadatakGPP;Integrated Security=True";
-            SqlConnection connection = new SqlConnection(connectionString);
+            BuyerService service = new BuyerService();
+            var newBuyer = service.DeleteBuyer(id);
 
-            using (connection)
+            if (newBuyer != false)
             {
-                SqlCommand command = new SqlCommand("DELETE FROM Buyer WHERE Id=@Id", connection);
-
-                command.Parameters.AddWithValue("@Id", id);
-                connection.Open();
-
-
-                int rowsAffected = command.ExecuteNonQuery();
-                if (rowsAffected > 0)
-                {
-                    return Request.CreateResponse(HttpStatusCode.OK, "Buyer with Id " + id + " has been deleted.");
-                }
-                else
-                {
-                    return Request.CreateResponse(HttpStatusCode.NotFound, "Buyer with Id " + id + " not found.");
-                }
+                return Request.CreateResponse(HttpStatusCode.Accepted, "Delete Buyer completed.");
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.NotAcceptable, "Failed to add Buyer.");
             }
         }
     }

@@ -12,5 +12,8 @@ namespace Program.Service.Common
     {
         List<Buyer> GetAllBuyers();
         List<Buyer> GetBuyer(Guid Id);
+        bool AddBuyer(Buyer buyer);
+        bool UpdateBuyer(Guid id, Buyer buyer);
+        bool DeleteBuyer(Guid id);
     }
 }

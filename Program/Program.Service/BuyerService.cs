@@ -23,5 +23,23 @@ namespace Program.Service
             List<Buyer> buyer = repository.GetBuyer(Id);
             return buyer;
         }
+        public bool AddBuyer(Buyer buyer)
+        {
+            BuyerRepository repository = new BuyerRepository();
+            bool newBuyer = repository.AddBuyer(buyer);
+            return true;
+        }
+        public bool UpdateBuyer(Guid id, Buyer buyer)
+        {
+            BuyerRepository repository = new BuyerRepository();
+            bool newBuyer = repository.AddBuyer(buyer);
+            return true;
+        }
+        public bool DeleteBuyer(Guid id)
+        {
+            BuyerRepository repository = new BuyerRepository();
+            bool newBuyer = repository.DeleteBuyer(id);
+            return true;
+        }
     }
 }
