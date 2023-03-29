@@ -1,6 +1,7 @@
 ﻿using Microsoft.Ajax.Utilities;
 using Program.Model;
 using Program.Service;
+using Program.Service.Common;
 using Program.WebApi.Controllers;
 using System;
 using System.Collections.Generic;
@@ -20,12 +21,17 @@ namespace Program.WebApi.Controllers
 
     public class BuyerController : ApiController
     {
+        protected IBuyerService BuyerService { get; set; }
+        public BuyerController(IBuyerService buyerService)
+        {
+            BuyerService = buyerService;
+        }
 
         [HttpGet]
         public async Task<HttpResponseMessage> GetAllBuyersAsync()
         {
-            BuyerService service = new BuyerService();
-            var buyers = await service.GetAllBuyersAsync();
+            //BuyerService service = new BuyerService();
+            var buyers = await BuyerService.GetAllBuyersAsync();
             
             if(buyers != null)
             {
@@ -40,8 +46,8 @@ namespace Program.WebApi.Controllers
         [HttpGet]
         public async Task<HttpResponseMessage> GetBuyerAsync(Guid Id)
         {
-            BuyerService service = new BuyerService();
-            var buyer = await service.GetBuyerAsync(Id);
+           // BuyerService service = new BuyerService();
+            var buyer = await BuyerService.GetBuyerAsync(Id);
 
             if (buyer != null)
             {
@@ -56,8 +62,8 @@ namespace Program.WebApi.Controllers
         [HttpPost]
         public async Task<HttpResponseMessage> AddBuyerAsync(Buyer buyer)
         {
-            BuyerService service = new BuyerService();
-            var newBuyer = await service.AddBuyerAsync(buyer);
+           // BuyerService service = new BuyerService();
+            var newBuyer = await BuyerService.AddBuyerAsync(buyer);
 
             if (newBuyer != false)
             {
@@ -72,8 +78,8 @@ namespace Program.WebApi.Controllers
         [HttpPut]
         public async Task<HttpResponseMessage> UpdateBuyerAsync(Guid id, [FromBody] Buyer buyer)
         {
-            BuyerService service = new BuyerService();
-            var newBuyer = await service.AddBuyerAsync(buyer);
+           // BuyerService service = new BuyerService();
+            var newBuyer = await BuyerService.AddBuyerAsync(buyer);
 
             if (newBuyer != false)
             {
@@ -88,8 +94,8 @@ namespace Program.WebApi.Controllers
         [HttpDelete]
         public async Task<HttpResponseMessage> DeleteAsync(Guid id)
         {
-            BuyerService service = new BuyerService();
-            var newBuyer = await service.DeleteBuyerAsync(id);
+          //  BuyerService service = new BuyerService();
+            var newBuyer = await BuyerService.DeleteBuyerAsync(id);
 
             if (newBuyer != false)
             {
@@ -102,87 +108,3 @@ namespace Program.WebApi.Controllers
         }
     }
 }
-
-
-
-
-        //public static List<FootballPlayer> players = new List<FootballPlayer>
-        //{
-        //    new FootballPlayer { Name = "Luka Lukic", Number = 1, Position = "goalkeeper", YearsInContract = 1, Club = "NK Osijek"},
-        //    new FootballPlayer { Name = "Kruno Skoro", Number = 4, Position = "forward", YearsInContract = 4, Club = "NK Varazdin"},
-        //    new FootballPlayer { Name = "Pero Peric", Number = 7, Position = "midfield", YearsInContract = 2, Club = "NK Hajduk"},
-        //    new FootballPlayer { Name = "Bruno Bukic", Number = 5, Position = "defense", YearsInContract = 2, Club = "NK Dinamo"},
-        //    new FootballPlayer { Name = "Matej Jukic", Number = 8, Position = "defense", YearsInContract = 1, Club = "NK Rijeka"}
-        //};
-
-        //return Request.CreateResponse(HttpStatusCode.OK, players);
-
-        // GET api/players/1
-        //[HttpGet]
-        //public HttpResponseMessage Get(int id)
-        //{
-        //    var newPlayer = players.FirstOrDefault(p => p.Number == id);
-        //    if (newPlayer != null)
-        //    {
-        //        return Request.CreateResponse(HttpStatusCode.OK, newPlayer);
-        //    }
-        //    else
-        //    {
-        //        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "The number you typed does not exist in the list.");
-        //    }
-        //}
-
-
-        //// POST api/players
-        //[HttpPost]
-        //public HttpResponseMessage Post([FromBody] FootballPlayer footballPlayer)
-        //{
-        //    var existingPlayer = players.FirstOrDefault(p => p.Number == footballPlayer.Number);
-        //    if (existingPlayer == null)
-        //    {   
-        //        players.Add(footballPlayer);
-        //        return Request.CreateResponse(HttpStatusCode.OK, players);  
-        //    }
-        //    else
-        //    {
-        //        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "The number you typed does not exist in the list.");
-        //    }
-        //}
-
-        //// PUT api/players/5
-        //[HttpPut]
-        //public HttpResponseMessage Put(int id, [FromBody] FootballPlayer updatedPlayer)
-        //{
-        //    var playerToUpdate = players.FirstOrDefault(p => p.Number == id);
-        //    if (playerToUpdate != null)
-        //    {
-
-        //        playerToUpdate.Name = updatedPlayer.Name;
-        //        playerToUpdate.Number = updatedPlayer.Number;
-        //        playerToUpdate.Position = updatedPlayer.Position;
-        //        playerToUpdate.YearsInContract = updatedPlayer.YearsInContract;
-        //        playerToUpdate.Club = updatedPlayer.Club;
-
-        //        return Request.CreateResponse(HttpStatusCode.OK, players);
-        //    }
-        //    else
-        //    {
-        //        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "The number you typed does not exist in the list.");
-        //    }
-        //}
-
-        //// DELETE api/players/5
-        //[HttpDelete]
-        //public HttpResponseMessage Delete(int id)
-        //{
-        //    var playerToDelete = players.FirstOrDefault(p => p.Number == id);
-        //    if (playerToDelete != null)
-        //    {
-        //        players.Remove(playerToDelete);
-        //        return Request.CreateResponse(HttpStatusCode.OK, players);
-        //    }
-        //    else
-        //    {
-        //        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "The number you typed does not exist in the list.");
-        //    }
-        //}

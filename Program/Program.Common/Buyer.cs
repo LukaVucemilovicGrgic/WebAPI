@@ -6,7 +6,18 @@ using System.Threading.Tasks;
 
 namespace Program.Common
 {
-    public class Class
+    public class Paging
     {
+
+    }
+
+    public class Sorting
+    {
+
+    }
+
+    public class Filtering 
+    {
+    
     }
 }

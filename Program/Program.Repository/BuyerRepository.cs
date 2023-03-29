@@ -11,6 +11,10 @@ namespace Program.Repository
 {
     public class BuyerRepository : IBuyerRepository
     {
+        public BuyerRepository()
+        {
+
+        }
         public async Task<List<Buyer>> GetAllBuyersAsync()      //async Task<T>
         {
             string connectionString = "Data Source=st-07\\MSSQLSERVER01;Initial Catalog=ZadatakGPP;Integrated Security=True";
