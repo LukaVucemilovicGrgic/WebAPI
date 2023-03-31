@@ -342,6 +342,10 @@
       <Project>{3BE1B790-3B28-4DBD-AB18-CA2C287D0A3A}</Project>
       <Name>Program.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Program.DAL\Program.DAL.csproj">
+      <Project>{011a1c47-fa9f-403d-96d6-a22a87ef2a2e}</Project>
+      <Name>Program.DAL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Program.Model\Program.Model.csproj">
       <Project>{308A353B-DBDF-47A5-9737-4333806E53F0}</Project>
       <Name>Program.Model</Name>

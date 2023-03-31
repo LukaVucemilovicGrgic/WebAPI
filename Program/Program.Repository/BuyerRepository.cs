@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Net;
 using Program.Model;
-using Program.Model.Common;
 using Program.Repository.Common;
 using Program.Common;
 using System.Text;
@@ -109,6 +108,7 @@ namespace Program.Repository
                 command.Parameters.AddWithValue("@Id", buyer.Id);
                 command.Parameters.AddWithValue("@BuyerName", buyer.BuyerName);
                 command.Parameters.AddWithValue("@PersonalIdentificationNumber", buyer.PersonalIdentificationNumber);
+                buyer.TicketId = Guid.NewGuid();
                 command.Parameters.AddWithValue("@TicketId", buyer.TicketId);
 
                 connection.Open();

@@ -89,16 +89,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuyerRepository.cs" />
+    <Compile Include="EFBuyerRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Program.Common\Program.Common.csproj">
       <Project>{3BE1B790-3B28-4DBD-AB18-CA2C287D0A3A}</Project>
       <Name>Program.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Program.Model.Common\Program.Model.Common.csproj">
-      <Project>{10530805-9D87-44A4-A1AE-A1D26C3610C3}</Project>
-      <Name>Program.Model.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Program.Model\Program.Model.csproj">
       <Project>{308A353B-DBDF-47A5-9737-4333806E53F0}</Project>
@@ -107,6 +104,10 @@
     <ProjectReference Include="..\Program.Repository.Common\Program.Repository.Common.csproj">
       <Project>{E643427B-1DD0-4D52-A3C0-D0A0AA6C1EF7}</Project>
       <Name>Program.Repository.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Program.DAL\Program.DAL.csproj">
+      <Project>{011A1C47-FA9F-403D-96D6-A22A87EF2A2E}</Project>
+      <Name>Program.DAL</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

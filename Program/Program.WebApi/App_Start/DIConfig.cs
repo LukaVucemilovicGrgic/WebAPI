@@ -1,10 +1,12 @@
 ﻿using Autofac;
 using Autofac.Integration.WebApi;
+using EFProgram.Repository;
 using Microsoft.Ajax.Utilities;
 using Program.Repository;
 using Program.Repository.Common;
 using Program.Service;
 using Program.Service.Common;
+using Program.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Web;
 using System.Web.Http;
+using Program.DAL;
 
 namespace Program.WebApi.App_Start
 {
@@ -30,7 +33,8 @@ namespace Program.WebApi.App_Start
             //specify the interfaces that these types implement (IBuyerService and IBuyerRepository, respectively).
 
             builder.RegisterType<BuyerService>().As<IBuyerService>();
-            builder.RegisterType<BuyerRepository>().As<IBuyerRepository>();
+            builder.RegisterType<EFBuyerRepository>().As<IBuyerRepository>();
+            builder.RegisterType<BuyerContext>().AsSelf();
 
             //build the container
 

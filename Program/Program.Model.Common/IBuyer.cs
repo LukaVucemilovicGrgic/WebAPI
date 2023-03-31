@@ -10,7 +10,7 @@ namespace Program.Model.Common
     {
          Guid Id { get; set; }
         string BuyerName { get; set; }
-        int PersonalIdentificationNumber { get; set; }
+        int? PersonalIdentificationNumber { get; set; }
         Guid TicketId { get; set; }
     }
 }

@@ -29,6 +29,7 @@ namespace Program.WebApi.Controllers
         }
 
         [HttpGet]
+        [Route("api/buyer/getall")]
         public async Task<HttpResponseMessage> GetAllBuyersAsync()
         {
             //BuyerService service = new BuyerService();
@@ -45,6 +46,7 @@ namespace Program.WebApi.Controllers
         }
 
         [HttpGet]
+        [Route("api/buyer/get")]
         public async Task<HttpResponseMessage> GetBuyerAsync(Guid Id)
         {
            // BuyerService service = new BuyerService();
@@ -61,6 +63,7 @@ namespace Program.WebApi.Controllers
         }
 
         [HttpPost]
+        [Route("api/buyer/post")]
         public async Task<HttpResponseMessage> AddBuyerAsync(Buyer buyer)
         {
            // BuyerService service = new BuyerService();
@@ -77,6 +80,7 @@ namespace Program.WebApi.Controllers
         }
 
         [HttpPut]
+        [Route("api/buyer/put")]
         public async Task<HttpResponseMessage> UpdateBuyerAsync(Guid id, [FromBody] Buyer buyer)
         {
            // BuyerService service = new BuyerService();
@@ -93,6 +97,7 @@ namespace Program.WebApi.Controllers
         }
 
         [HttpDelete]
+        [Route("api/buyer/delete")]
         public async Task<HttpResponseMessage> DeleteAsync(Guid id)
         {
           //  BuyerService service = new BuyerService();
