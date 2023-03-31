@@ -1,4 +1,5 @@
-﻿using Program.Model;
+﻿using Program.Common;
+using Program.Model;
 using Program.Repository;
 using Program.Repository.Common;
 using Program.Service.Common;
@@ -46,6 +47,12 @@ namespace Program.Service
           //  BuyerRepository repository = new BuyerRepository();
             bool newBuyer = await BuyerRepository.DeleteBuyerAsync(id);
             return true;
+        }
+        public async Task<List<Buyer>> GetPagingSortingFilteringAsync(Paging paging, Sorting sorting, Filtering filtering)         //dodaj
+        {
+            BuyerRepository repository = new BuyerRepository();
+            List<Buyer> buyers = await repository.GetPagingSortingFilteringAsync(paging, sorting, filtering);      //dodaj
+            return buyers;
         }
     }
 }

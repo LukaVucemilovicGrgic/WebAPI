@@ -6,29 +6,23 @@ namespace Program.DAL
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("Buyer")]
-    public partial class Buyer
+    [Table("TicketType")]
+    public partial class TicketType
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Buyer()
+        public TicketType()
         {
-            BureauBuyer = new HashSet<BureauBuyer>();
+            Ticket = new HashSet<Ticket>();
         }
 
         public Guid Id { get; set; }
 
+        public decimal? DiscountSize { get; set; }
+
         [StringLength(30)]
-        public string BuyerName { get; set; }
-
-        public int? PersonalIdentificationNumber { get; set; }
-
-        public Guid TicketId { get; set; }
+        public string Name { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BureauBuyer> BureauBuyer { get; set; }
-
-        public virtual Ticket Ticket { get; set; }
-
-        public virtual InfoBuyer InfoBuyer { get; set; }
+        public virtual ICollection<Ticket> Ticket { get; set; }
     }
 }

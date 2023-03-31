@@ -6,11 +6,11 @@ namespace Program.DAL
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("Buyer")]
-    public partial class Buyer
+    [Table("Bureau")]
+    public partial class Bureau
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Buyer()
+        public Bureau()
         {
             BureauBuyer = new HashSet<BureauBuyer>();
         }
@@ -18,17 +18,14 @@ namespace Program.DAL
         public Guid Id { get; set; }
 
         [StringLength(30)]
-        public string BuyerName { get; set; }
+        public string AddressBureau { get; set; }
 
-        public int? PersonalIdentificationNumber { get; set; }
+        public int? ContactNumber { get; set; }
 
-        public Guid TicketId { get; set; }
+        [StringLength(30)]
+        public string Email { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BureauBuyer> BureauBuyer { get; set; }
-
-        public virtual Ticket Ticket { get; set; }
-
-        public virtual InfoBuyer InfoBuyer { get; set; }
     }
 }

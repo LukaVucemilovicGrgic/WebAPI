@@ -1,4 +1,5 @@
 ﻿using Microsoft.Ajax.Utilities;
+using Program.Common;
 using Program.Model;
 using Program.Service;
 using Program.Service.Common;
@@ -106,5 +107,22 @@ namespace Program.WebApi.Controllers
                 return Request.CreateResponse(HttpStatusCode.NotAcceptable, "Failed to add Buyer.");
             }
         }
+
+        [HttpGet]
+        [Route("api/buyer/getbyPSF")]
+        public async Task<HttpResponseMessage> GetPagingSortingFilteringAsync([FromUri] Paging paging, [FromUri] Sorting sorting, [FromUri] Filtering filtering)   //dodajem 
+        {
+            List<Buyer> buyers = await BuyerService.GetPagingSortingFilteringAsync(paging, sorting, filtering);        //dodaj
+
+            if (buyers != null)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, buyers);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound);
+            }
+        }
+
     }
 }

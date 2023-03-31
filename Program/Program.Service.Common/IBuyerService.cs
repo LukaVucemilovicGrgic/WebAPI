@@ -1,4 +1,5 @@
-﻿using Program.Model;
+﻿using Program.Common;
+using Program.Model;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -15,5 +16,6 @@ namespace Program.Service.Common
         Task<bool> AddBuyerAsync(Buyer buyer);
         Task<bool> UpdateBuyerAsync(Guid id, Buyer buyer);
         Task<bool> DeleteBuyerAsync(Guid id);
+        Task<List<Buyer>> GetPagingSortingFilteringAsync(Paging paging, Sorting sorting, Filtering filtering);           //dodaj filter i sort kad budes radio
     }
 }

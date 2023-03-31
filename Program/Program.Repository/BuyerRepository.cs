@@ -6,6 +6,10 @@ using System.Net;
 using Program.Model;
 using Program.Model.Common;
 using Program.Repository.Common;
+using Program.Common;
+using System.Text;
+using System.Net.Http.Formatting;
+using System.Data;
 
 namespace Program.Repository
 {
@@ -172,5 +176,81 @@ namespace Program.Repository
                 }
             }
         }
+
+        public async Task<List<Buyer>> GetPagingSortingFilteringAsync(Paging paging, Sorting sorting, Filtering filtering)               //dodajem
+        {
+            string connectionString = "Data Source=st-07\\MSSQLSERVER01;Initial Catalog=ZadatakGPP;Integrated Security=True";
+
+            SqlConnection connection = new SqlConnection(connectionString);
+
+            using (connection)
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.AppendLine("SELECT * FROM Buyer WHERE 1=1 ");
+
+                //FILETRING
+
+                if(filtering != null)
+                {
+                    if(filtering.Id != Guid.Empty)
+                    {
+                        stringBuilder.AppendLine("AND Id = @Id ");
+                    }
+                }
+
+                //SORTING
+
+                if (sorting != null )
+                {
+                    stringBuilder.AppendLine($"ORDER BY {sorting.OrderBy}");
+
+                }
+
+
+                //PAGING
+
+                if (paging != null )
+                {
+                    stringBuilder.AppendLine("OFFSET (@PageNumber-1) * @PageSize ROWS FETCH NEXT @PageSize ROWS ONLY");
+
+                }
+                SqlCommand command = new SqlCommand(stringBuilder.ToString(), connection);
+                command.Parameters.AddWithValue("Id", filtering.Id);
+                command.Parameters.AddWithValue("@PageSize", paging.PageSize);
+                command.Parameters.AddWithValue("@PageNumber", paging.PageNumber);
+
+
+                command.Connection = connection;
+                connection.Open();
+
+                SqlDataReader reader = await command.ExecuteReaderAsync();
+
+                List<Buyer> buyers = new List<Buyer>();
+                while (reader.Read())
+                {
+                    Buyer buyerList = new Buyer();
+
+                    buyerList.Id = reader.GetGuid(0);
+                    buyerList.BuyerName = reader.GetString(1);
+                    buyerList.PersonalIdentificationNumber = reader.GetInt32(2);
+                    buyerList.TicketId = reader.GetGuid(3);
+                    buyers.Add(buyerList);
+
+                    if (reader.HasRows)
+                    {
+                        reader.Close();
+                        return buyers;
+
+                    }
+                    else
+                    {
+                        reader.Close();
+                        return null;
+                    }
+                }
+                return buyers;
+            }
+        }
+
     }
 }
