@@ -12,7 +12,7 @@ namespace Program.Service.Common
     public interface IBuyerService
     {
         Task<List<Buyer>> GetAllBuyersAsync();
-        Task<List<Buyer>> GetBuyerAsync(Guid Id);
+        Task<Buyer> GetBuyerAsync(Guid Id);
         Task<bool> AddBuyerAsync(Buyer buyer);
         Task<bool> UpdateBuyerAsync(Guid id, Buyer buyer);
         Task<bool> DeleteBuyerAsync(Guid id);

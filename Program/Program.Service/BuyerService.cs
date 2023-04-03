@@ -24,10 +24,10 @@ namespace Program.Service
             List<Buyer> buyers = await BuyerRepository.GetAllBuyersAsync();
             return buyers;
         }
-        public async Task<List<Buyer>> GetBuyerAsync(Guid Id)
+        public async Task<Buyer> GetBuyerAsync(Guid Id)
         {
           //  BuyerRepository repository = new BuyerRepository();
-            List<Buyer> buyer = await BuyerRepository.GetBuyerAsync(Id);
+            Buyer buyer = await BuyerRepository.GetBuyerAsync(Id);
             return buyer;
         }
         public async Task<bool> AddBuyerAsync(Buyer buyer)

@@ -22,6 +22,8 @@ namespace Program.WebApi.Controllers
 
     public class BuyerController : ApiController
     {
+
+        //DI!
         protected IBuyerService BuyerService { get; set; }
         public BuyerController(IBuyerService buyerService)
         {

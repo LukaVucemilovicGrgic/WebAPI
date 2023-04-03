@@ -56,7 +56,7 @@ namespace Program.Repository
             }
         }
 
-        public async Task<List<Buyer>> GetBuyerAsync(Guid Id)
+        public async Task<Buyer> GetBuyerAsync(Guid Id)
         {
             string connectionString = "Data Source=st-07\\MSSQLSERVER01;Initial Catalog=ZadatakGPP;Integrated Security=True";
 
@@ -70,7 +70,7 @@ namespace Program.Repository
 
                 SqlDataReader reader = await command.ExecuteReaderAsync();
 
-                List<Buyer> buyers = new List<Buyer>();
+                Buyer buyers = new Buyer();
 
                 if (reader.HasRows)
                 {
@@ -81,11 +81,8 @@ namespace Program.Repository
                     buyer.BuyerName = reader.GetString(1);
                     buyer.PersonalIdentificationNumber = reader.GetInt32(2);
                     buyer.TicketId = reader.GetGuid(3);
-
-                    buyers.Add(buyer);
-
                     reader.Close();
-                    return buyers;
+                    return buyer;
                 }
                 else
                 {
