@@ -22,7 +22,7 @@ namespace Program.DAL
 
         public int? PersonalIdentificationNumber { get; set; }
 
-        public Guid TicketId { get; set; }
+        public Guid? TicketId { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BureauBuyer> BureauBuyer { get; set; }

@@ -7,6 +7,7 @@ using Program.Repository.Common;
 using Program.DAL;
 using Program.Service;
 using System.Reflection;
+using EFProgram.Repository;
 
 namespace Program.Mvc.App_Start
 {
@@ -18,7 +19,7 @@ namespace Program.Mvc.App_Start
 
             builder.RegisterControllers(Assembly.GetExecutingAssembly());
             builder.RegisterType<BuyerService>().As<IBuyerService>();
-            builder.RegisterType<BuyerRepository>().As<IBuyerRepository>();
+            builder.RegisterType<EFBuyerRepository>().As<IBuyerRepository>();
             builder.RegisterType<BuyerContext>().AsSelf();
 
             var container = builder.Build();

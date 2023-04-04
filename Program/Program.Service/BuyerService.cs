@@ -20,38 +20,50 @@ namespace Program.Service
         }
         public async Task<List<Buyer>> GetAllBuyersAsync()
         {
-          //  BuyerRepository repository = new BuyerRepository();
             List<Buyer> buyers = await BuyerRepository.GetAllBuyersAsync();
             return buyers;
         }
         public async Task<Buyer> GetBuyerAsync(Guid Id)
         {
-          //  BuyerRepository repository = new BuyerRepository();
             Buyer buyer = await BuyerRepository.GetBuyerAsync(Id);
             return buyer;
         }
         public async Task<bool> AddBuyerAsync(Buyer buyer)
         {
-          //  BuyerRepository repository = new BuyerRepository();
-            bool newBuyer = await BuyerRepository.AddBuyerAsync(buyer);
-            return true;
+            bool isSuccessfull = await BuyerRepository.AddBuyerAsync(buyer);
+            return isSuccessfull;
         }
         public async Task<bool> UpdateBuyerAsync(Guid id, Buyer buyer)
         {
-          //  BuyerRepository repository = new BuyerRepository();
-            bool newBuyer = await BuyerRepository.AddBuyerAsync(buyer);
-            return true;
+            Buyer changeBuyer = await BuyerRepository.GetBuyerAsync(id);
+            if(changeBuyer == null)
+            {
+                return false;
+            }
+            Buyer buyertoUpadate = new Buyer
+            {
+                Id = id,
+                BuyerName = buyer.BuyerName == default ? changeBuyer.BuyerName : buyer.BuyerName,
+                PersonalIdentificationNumber = buyer.PersonalIdentificationNumber == default ? changeBuyer.PersonalIdentificationNumber : buyer.PersonalIdentificationNumber,
+                TicketId = buyer.TicketId == default ? changeBuyer.TicketId : buyer.TicketId,
+            };
+            bool isUpdated = await BuyerRepository.UpdateBuyerAsync(id, buyertoUpadate);
+            return isUpdated;
         }
         public async Task<bool> DeleteBuyerAsync(Guid id)
         {
-          //  BuyerRepository repository = new BuyerRepository();
-            bool newBuyer = await BuyerRepository.DeleteBuyerAsync(id);
-            return true;
+            Buyer buyerCheck = await BuyerRepository.GetBuyerAsync(id);
+            if (buyerCheck == null)
+            {
+                return false;
+            }
+            bool isDeleted = await BuyerRepository.DeleteBuyerAsync(id);
+            return isDeleted;
         }
-        public async Task<List<Buyer>> GetPagingSortingFilteringAsync(Paging paging, Sorting sorting, Filtering filtering)         //dodaj
+        public async Task<List<Buyer>> GetPagingSortingFilteringAsync(Paging paging, Sorting sorting, Filtering filtering)        
         {
             BuyerRepository repository = new BuyerRepository();
-            List<Buyer> buyers = await repository.GetPagingSortingFilteringAsync(paging, sorting, filtering);      //dodaj
+            List<Buyer> buyers = await repository.GetPagingSortingFilteringAsync(paging, sorting, filtering);     
             return buyers;
         }
     }

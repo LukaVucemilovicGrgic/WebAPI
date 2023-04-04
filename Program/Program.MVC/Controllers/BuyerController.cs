@@ -1,9 +1,12 @@
-﻿using Program.Service.Common;
+﻿using Program.DAL;
+using Program.Model;
+using Program.Service.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -13,7 +16,6 @@ namespace Program.WebApi.Controllers
 
     public class BuyerController : Controller
     {
-
         //DI!
         protected IBuyerService BuyerService { get; set; }
         public BuyerController(IBuyerService buyerService)
@@ -22,7 +24,7 @@ namespace Program.WebApi.Controllers
         }
 
         [HttpGet]
-        //[Route("Buyer/Index")]
+        [Route("Buyer/GetAllBuyersAsync")]
         public async Task<ActionResult> GetAllBuyersAsync()
         {
             var buyers = await BuyerService.GetAllBuyersAsync();
@@ -45,94 +47,106 @@ namespace Program.WebApi.Controllers
             }
         }
 
-        //[HttpGet]
-        //[Route("Buyer/Details/{id}")]
-        //public async Task<ActionResult> GetBuyerAsync(Guid Id)
-        //{
-        //    // BuyerService service = new BuyerService();
-        //    var buyer = await BuyerService.GetBuyerAsync(Id);
+        [HttpGet]
+        [Route("Buyer/GetBuyerAsync/{id}")]
+        public async Task<ActionResult> GetBuyerAsync(Guid Id)
+        {
+            var buyer = await BuyerService.GetBuyerAsync(Id);
 
-        //    if (buyer != null)
-        //    {
-        //        var viewModel = new BuyerViewModel
-        //        {
-        //            Id = buyer.Id,
-        //            BuyerName = buyer.BuyerName,
-        //            PersonalIdentificationNumber = buyer.PersonalIdentificationNumber,
-        //            TicketId = buyer.TicketId
-        //        };
+            if (buyer != null)
+            {
+                var viewModel = new BuyerViewModel
+                {
+                    Id = buyer.Id,
+                    BuyerName = buyer.BuyerName,
+                    PersonalIdentificationNumber = buyer.PersonalIdentificationNumber,
+                    TicketId = buyer.TicketId
+                };
+                return View(viewModel);
+            }
+            else
+            {
+                return HttpNotFound();
+            }
+        }
+        [HttpGet]
+        public ActionResult AddBuyerAsync()
+        {
+            return  View();
+        }
 
-        //        return View(viewModel);
-        //    }
-        //    else
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //}
+        [HttpPost]
+        [Route("Buyer/AddBuyerAsync")]
+        public async Task<ActionResult> AddBuyerAsync(BuyerCreateView buyer)
+        {
+            try
+            {
+                Model.Buyer newBuyer = new Model.Buyer();
+                newBuyer.Id = Guid.NewGuid();
+                newBuyer.BuyerName = buyer.BuyerName;
+                newBuyer.PersonalIdentificationNumber = buyer.PersonalIdentificationNumber;
+                newBuyer.TicketId = buyer.TicketId;
 
-        //[HttpPost]
-        //[Route("api/buyer/post")]
-        //public async Task<ActionResult> AddBuyerAsync(Buyer buyer)
-        //{
-        //    // BuyerService service = new BuyerService();
-        //    var newBuyer = await BuyerService.AddBuyerAsync(buyer);
+                bool isAdded = await BuyerService.AddBuyerAsync(newBuyer);
+                if (!isAdded)
+                {
+                    return View("Error");
+                }
+                return RedirectToAction("GetAllBuyersAsync");
+            }
+            catch (Exception ex)
+            {
+                return View("Error");
+            }
+        }
 
-        //    if (newBuyer != false)
-        //    {
-        //        return Request.CreateResponse(HttpStatusCode.Accepted, "Add Buyer completed.");
-        //    }
-        //    else
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //}
 
-        //[HttpPut]
-        //[Route("api/buyer/put")]
-        //public async Task<ActionResult> UpdateBuyerAsync(Guid id, [FromBody] Buyer buyer)
-        //{
-        //    // BuyerService service = new BuyerService();
-        //    var newBuyer = await BuyerService.AddBuyerAsync(buyer);
+            //[HttpPut]
+            //[Route("api/buyer/put")]
+            //public async Task<ActionResult> UpdateBuyerAsync(Guid id, Buyer buyer)
+            //{
+            //    // BuyerService service = new BuyerService();
+            //    var newBuyer = await BuyerService.AddBuyerAsync(buyer);
 
-        //    if (newBuyer != false)
-        //    {
-        //        return Request.CreateResponse(HttpStatusCode.Accepted, "Add Buyer completed.");
-        //    }
-        //    else
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //}
+            //    if (newBuyer != false)
+            //    {
+            //        return Request.CreateResponse(HttpStatusCode.Accepted, "Add Buyer completed.");
+            //    }
+            //    else
+            //    {
+            //        return HttpNotFound();
+            //    }
+            //}
 
-        //[HttpDelete]
-        //[Route("Buyer/{id}")]
-        //public async Task<ActionResult> DeleteBuyerAsync(Guid id)
-        //{
-        //    //  BuyerService service = new BuyerService();
-        //    bool buyer = await BuyerService.DeleteBuyerAsync(id);
+            //    [HttpDelete]
+            //[Route("Buyer/DeleteBuyerAsync/{id}")]
+            //public async Task<ActionResult> DeleteBuyerAsync(Guid id)
+            //{
+            //    var buyer = await BuyerService.DeleteBuyerAsync(id);
 
-        //    if (buyer == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View();
-        //}
+            //    if (buyer != false)
+            //    {
 
-        //[HttpGet]
-        //[Route("api/buyer/getbyPSF")]
-        //public async Task<ActionResult> GetPagingSortingFilteringAsync([FromUri] Paging paging, [FromUri] Sorting sorting, [FromUri] Filtering filtering)   //dodajem 
-        //{
-        //    List<Buyer> buyers = await BuyerService.GetPagingSortingFilteringAsync(paging, sorting, filtering);        //dodaj
+            //    }
+            //    return View();
+            //}
 
-        //    if (buyers != null)
-        //    {
-        //        return Request.CreateResponse(HttpStatusCode.OK, buyers);
-        //    }
-        //    else
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //}
 
-    }
+            //[HttpGet]
+            //[Route("api/buyer/getbyPSF")]
+            //public async Task<ActionResult> GetPagingSortingFilteringAsync([FromUri] Paging paging, [FromUri] Sorting sorting, [FromUri] Filtering filtering)   //dodajem 
+            //{
+            //    List<Buyer> buyers = await BuyerService.GetPagingSortingFilteringAsync(paging, sorting, filtering);        //dodaj
+
+            //    if (buyers != null)
+            //    {
+            //        return Request.CreateResponse(HttpStatusCode.OK, buyers);
+            //    }
+            //    else
+            //    {
+            //        return HttpNotFound();
+            //    }
+            //}
+
+        }
 }
